@@ -100,7 +100,7 @@ hidden_proto(selinux_getenforcemode);
 hidden_proto(selinux_getpolicytype);
 hidden_proto(selinux_raw_to_trans_context);
 hidden_proto(selinux_trans_to_raw_context);
-    hidden_proto(selinux_raw_context_to_color);
+hidden_proto(selinux_raw_context_to_color);
 hidden_proto(security_get_initial_context);
 hidden_proto(security_get_initial_context_raw);
 hidden_proto(selinux_reset_config);
@@ -144,7 +144,7 @@ extern int selinux_page_size hidden;
 			pthread_setspecific(KEY, VALUE);	\
 	} while (0)
 
-#define SELINUXDIR "/etc/selinux/"
+#define SELINUXDIR "/system/etc/selinux/"
 #define SELINUXCONFIG SELINUXDIR "config"
 
 extern int has_selinux_config hidden;

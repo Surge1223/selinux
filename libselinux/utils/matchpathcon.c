@@ -10,6 +10,10 @@
 #include <selinux/selinux.h>
 #include <limits.h>
 #include <stdlib.h>
+#include "policy.h"
+#include "selinux_internal.h"
+#include "get_default_type_internal.h"
+
 
 static __attribute__ ((__noreturn__)) void usage(const char *progname)
 {

@@ -12,7 +12,7 @@ TARGETS = checkpolicy checkmodule
 LEX = flex
 YACC = bison -y
 
-CFLAGS ?= -g -Wall -Werror -Wshadow -O2 -pipe -fno-strict-aliasing
+CFLAGS ?= -g -Wall -Werror -Wshadow -O2 -pipe -fno-strict-aliasing -D__APPLE__
 
 override CFLAGS += -I.
 
