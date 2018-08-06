@@ -34,6 +34,9 @@
 #ifndef IPPROTO_DCCP
 #define IPPROTO_DCCP 33
 #endif
+#ifndef IPPROTO_SCTP
+#define IPPROTO_SCTP 132
+#endif
 
 #include <sepol/policydb/policydb.h>
 #include <sepol/policydb/polcaps.h>
@@ -567,7 +570,7 @@ int cil_typeattribute_to_policydb(policydb_t *pdb, struct cil_typeattribute *cil
 	char *key = NULL;
 	type_datum_t *sepol_attr = NULL;
 
-	if (!cil_attr->used) {
+	if (!cil_attr->keep) {
 		return SEPOL_OK;		
 	}
 
@@ -632,7 +635,7 @@ int cil_typeattribute_to_bitmap(policydb_t *pdb, const struct cil_db *db, struct
 	ebitmap_node_t *tnode;
 	unsigned int i;
 
-	if (!cil_attr->used) {
+	if (!cil_attr->keep) {
 		return SEPOL_OK;
 	}
 
@@ -1442,7 +1445,7 @@ static int __cil_should_expand_attribute( const struct cil_db *db, struct cil_sy
 
 	attr = (struct cil_typeattribute *)datum;
 
-	return !attr->used || (ebitmap_cardinality(attr->types) < db->attrs_expand_size);
+	return !attr->keep || (ebitmap_cardinality(attr->types) < db->attrs_expand_size);
 }
 
 int __cil_avrule_to_avtab(policydb_t *pdb, const struct cil_db *db, struct cil_avrule *cil_avrule, cond_node_t *cond_node, enum cil_flavor cond_flavor)
@@ -2525,7 +2528,7 @@ int __cil_constrain_expr_datum_to_sepol_expr(policydb_t *pdb, const struct cil_d
 			if (rc != SEPOL_OK) {
 				if (FLAVOR(item->data) == CIL_TYPEATTRIBUTE) {
 					struct cil_typeattribute *attr = item->data;
-					if (!attr->used) {
+					if (!attr->keep) {
 						rc = 0;
 					}
 				}
@@ -3271,6 +3274,9 @@ int cil_portcon_to_policydb(policydb_t *pdb, struct cil_sort *portcons)
 			break;
 		case CIL_PROTOCOL_DCCP:
 			new_ocon->u.port.protocol = IPPROTO_DCCP;
+			break;
+		case CIL_PROTOCOL_SCTP:
+			new_ocon->u.port.protocol = IPPROTO_SCTP;
 			break;
 		default:
 			/* should not get here */

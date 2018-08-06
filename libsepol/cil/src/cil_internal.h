@@ -103,6 +103,7 @@ char *CIL_KEY_STAR;
 char *CIL_KEY_TCP;
 char *CIL_KEY_UDP;
 char *CIL_KEY_DCCP;
+char *CIL_KEY_SCTP;
 char *CIL_KEY_AUDITALLOW;
 char *CIL_KEY_TUNABLEIF;
 char *CIL_KEY_ALLOW;
@@ -316,6 +317,7 @@ struct cil_db {
 	int preserve_tunables;
 	int handle_unknown;
 	int mls;
+	int multiple_decls;
 	int target_platform;
 	int policy_version;
 };
@@ -530,6 +532,7 @@ struct cil_typeattribute {
 	struct cil_list *expr_list;
 	ebitmap_t *types;
 	int used;	// whether or not this attribute was used in a binary policy rule
+	int keep;
 };
 
 struct cil_typeattributeset {
@@ -738,7 +741,8 @@ struct cil_filecon {
 enum cil_protocol {
 	CIL_PROTOCOL_UDP = 1,
 	CIL_PROTOCOL_TCP,
-	CIL_PROTOCOL_DCCP
+	CIL_PROTOCOL_DCCP,
+	CIL_PROTOCOL_SCTP
 };
 
 struct cil_ibpkeycon {

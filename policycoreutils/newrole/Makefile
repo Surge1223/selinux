@@ -1,9 +1,9 @@
 # Installation directories.
-PREFIX ?= $(DESTDIR)/usr
+PREFIX ?= /usr
 BINDIR ?= $(PREFIX)/bin
 MANDIR ?= $(PREFIX)/share/man
-ETCDIR ?= $(DESTDIR)/etc
-LOCALEDIR = /usr/share/locale
+ETCDIR ?= /etc
+LOCALEDIR = $(DESTDIR)$(PREFIX)/share/locale
 PAMH ?= $(shell test -f /usr/include/security/pam_appl.h && echo y)
 AUDITH ?= $(shell test -f /usr/include/libaudit.h && echo y)
 # Enable capabilities to permit newrole to generate audit records.
@@ -23,18 +23,18 @@ VERSION = $(shell cat ../VERSION)
 CFLAGS ?= -Werror -Wall -W
 EXTRA_OBJS =
 override CFLAGS += -DVERSION=\"$(VERSION)\" -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
-LDLIBS += -lselinux
+override LDLIBS += -lselinux
 ifeq ($(PAMH), y)
 	override CFLAGS += -DUSE_PAM
 	EXTRA_OBJS += hashtab.o
-	LDLIBS += -lpam -lpam_misc
+	override LDLIBS += -lpam -lpam_misc
 else
 	override CFLAGS += -D_XOPEN_SOURCE=500
-	LDLIBS += -lcrypt
+	override LDLIBS += -lcrypt
 endif
 ifeq ($(AUDITH), y)
 	override CFLAGS += -DUSE_AUDIT
-	LDLIBS += -laudit
+	override LDLIBS += -laudit
 endif
 ifeq ($(LSPP_PRIV),y)
 	override AUDIT_LOG_PRIV=y
@@ -50,7 +50,7 @@ ifeq ($(NAMESPACE_PRIV),y)
 endif
 ifeq ($(IS_SUID),y)
 	MODE := 4555
-	LDLIBS += -lcap-ng
+	override LDLIBS += -lcap-ng
 else
 	MODE := 0555
 endif
@@ -61,17 +61,17 @@ newrole: newrole.o $(EXTRA_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 install: all
-	test -d $(BINDIR)      || install -m 755 -d $(BINDIR)
-	test -d $(ETCDIR)/pam.d || install -m 755 -d $(ETCDIR)/pam.d
-	test -d $(MANDIR)/man1 || install -m 755 -d $(MANDIR)/man1
-	install -m $(MODE) newrole $(BINDIR)
-	install -m 644 newrole.1 $(MANDIR)/man1/
+	test -d $(DESTDIR)$(BINDIR)      || install -m 755 -d $(DESTDIR)$(BINDIR)
+	test -d $(DESTDIR)$(ETCDIR)/pam.d || install -m 755 -d $(DESTDIR)$(ETCDIR)/pam.d
+	test -d $(DESTDIR)$(MANDIR)/man1 || install -m 755 -d $(DESTDIR)$(MANDIR)/man1
+	install -m $(MODE) newrole $(DESTDIR)$(BINDIR)
+	install -m 644 newrole.1 $(DESTDIR)$(MANDIR)/man1/
 ifeq ($(PAMH), y)
-	test -d $(ETCDIR)/pam.d || install -m 755 -d $(ETCDIR)/pam.d
+	test -d $(DESTDIR)$(ETCDIR)/pam.d || install -m 755 -d $(DESTDIR)$(ETCDIR)/pam.d
 ifeq ($(LSPP_PRIV),y)
-	install -m 644 newrole-lspp.pamd $(ETCDIR)/pam.d/newrole
+	install -m 644 newrole-lspp.pamd $(DESTDIR)$(ETCDIR)/pam.d/newrole
 else
-	install -m 644 newrole.pamd $(ETCDIR)/pam.d/newrole
+	install -m 644 newrole.pamd $(DESTDIR)$(ETCDIR)/pam.d/newrole
 endif
 endif
 
@@ -82,4 +82,4 @@ indent:
 	../../scripts/Lindent $(wildcard *.[ch])
 
 relabel: install
-	/sbin/restorecon $(BINDIR)/newrole
+	/sbin/restorecon $(DESTDIR)$(BINDIR)/newrole

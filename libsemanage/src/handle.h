@@ -62,6 +62,10 @@ struct semanage_handle {
 	int is_in_transaction;
 	int do_reload;		/* whether to reload policy after commit */
 	int do_rebuild;		/* whether to rebuild policy if there were no changes */
+	int commit_err;		/* set by semanage_direct_commit() if there are
+				 * any errors when building or committing the
+				 * sandbox to kernel policy at /etc/selinux
+				 */
 	int modules_modified;
 	int create_store;	/* whether to create the store if it does not exist
 				 * this will only have an effect on direct connections */
@@ -79,7 +83,7 @@ struct semanage_handle {
 	struct semanage_policy_table *funcs;
 
 	/* Object databases */
-#define DBASE_COUNT      23
+#define DBASE_COUNT      24
 
 /* Local modifications */
 #define DBASE_LOCAL_USERS_BASE  0
@@ -102,13 +106,14 @@ struct semanage_handle {
 #define DBASE_POLICY_INTERFACES  15
 #define DBASE_POLICY_BOOLEANS    16
 #define DBASE_POLICY_FCONTEXTS   17
-#define DBASE_POLICY_SEUSERS     18
-#define DBASE_POLICY_NODES       19
-#define DBASE_POLICY_IBPKEYS     20
-#define DBASE_POLICY_IBENDPORTS  21
+#define DBASE_POLICY_FCONTEXTS_H 18
+#define DBASE_POLICY_SEUSERS     19
+#define DBASE_POLICY_NODES       20
+#define DBASE_POLICY_IBPKEYS     21
+#define DBASE_POLICY_IBENDPORTS  22
 
 /* Active kernel policy */
-#define DBASE_ACTIVE_BOOLEANS    22
+#define DBASE_ACTIVE_BOOLEANS    23
 	dbase_config_t dbase[DBASE_COUNT];
 };
 
@@ -233,6 +238,12 @@ static inline
     dbase_config_t * semanage_fcontext_dbase_policy(semanage_handle_t * handle)
 {
 	return &handle->dbase[DBASE_POLICY_FCONTEXTS];
+}
+
+static inline
+    dbase_config_t * semanage_fcontext_dbase_homedirs(semanage_handle_t * handle)
+{
+	return &handle->dbase[DBASE_POLICY_FCONTEXTS_H];
 }
 
 static inline

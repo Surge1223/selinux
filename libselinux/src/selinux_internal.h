@@ -145,6 +145,38 @@ extern int selinux_page_size hidden;
 	} while (0)
 
 #define SELINUXDIR "/system/etc/selinux/"
+/* selabel_lookup() is only thread safe if we're compiled with pthreads */
+
+#pragma weak pthread_mutex_init
+#pragma weak pthread_mutex_destroy
+#pragma weak pthread_mutex_lock
+#pragma weak pthread_mutex_unlock
+
+#define __pthread_mutex_init(LOCK, ATTR) 			\
+	do {							\
+		if (pthread_mutex_init != NULL)			\
+			pthread_mutex_init(LOCK, ATTR);		\
+	} while (0)
+
+#define __pthread_mutex_destroy(LOCK) 				\
+	do {							\
+		if (pthread_mutex_destroy != NULL)		\
+			pthread_mutex_destroy(LOCK);		\
+	} while (0)
+
+#define __pthread_mutex_lock(LOCK) 				\
+	do {							\
+		if (pthread_mutex_lock != NULL)			\
+			pthread_mutex_lock(LOCK);		\
+	} while (0)
+
+#define __pthread_mutex_unlock(LOCK) 				\
+	do {							\
+		if (pthread_mutex_unlock != NULL)		\
+			pthread_mutex_unlock(LOCK);		\
+	} while (0)
+
+
 #define SELINUXCONFIG SELINUXDIR "config"
 
 extern int has_selinux_config hidden;

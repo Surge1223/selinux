@@ -23,6 +23,7 @@ FILE_LIST ?= cil_introduction.md \
 	cil_sid_statements.md \
 	cil_type_statements.md \
 	cil_user_statements.md \
+	cil_infiniband_statements.md \
 	cil_xen_statements.md
 
 PANDOC_FILE_LIST = $(addprefix $(TMPDIR)/,$(FILE_LIST))
@@ -30,6 +31,12 @@ PANDOC_FILE_LIST = $(addprefix $(TMPDIR)/,$(FILE_LIST))
 PDF_OUT=CIL_Reference_Guide.pdf
 HTML_OUT=CIL_Reference_Guide.html
 PANDOC = pandoc
+SED ?= sed
+
+OS := $(shell uname)
+ifeq ($(OS), Darwin)
+	SED := gsed
+endif
 
 all: html pdf
 
@@ -39,12 +46,12 @@ $(TMPDIR):
 $(TMPDIR)/%.md: %.md | $(TMPDIR)
 	cp -f $< $(TMPDIR)/
 	@# Substitute markdown links for conversion into PDF links
-	sed -i -re 's:(\[`[^`]*`\])\([^#]*([^\)]):\1\(\2:g' $@
+	$(SED) -i -re 's:(\[`[^`]*`\])\([^#]*([^\)]):\1\(\2:g' $@
 
 $(TMPDIR)/policy.cil: $(TESTDIR)/policy.cil
 	cp -f $< $@
 	@# add a title for the TOC to policy.cil. This is needed to play nicely with the PDF conversion.
-	sed -i '1i Example Policy\n=========\n```' $@
+	$(SED) -i '1i Example Policy\n=========\n```' $@
 	echo '```' >> $@
 
 html: $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil

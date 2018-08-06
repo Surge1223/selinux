@@ -775,7 +775,7 @@ static void cil_classes_to_policy(FILE *out, struct cil_list *classorder)
 	}
 }
 
-static void cil_defaults_to_policy(FILE *out, struct cil_list *defaults, char *kind)
+static void cil_defaults_to_policy(FILE *out, struct cil_list *defaults, const char *kind)
 {
 	struct cil_list_item *i1, *i2, *i3;
 	struct cil_default *def;
@@ -1069,7 +1069,7 @@ static void cil_typebounds_to_policy(FILE *out, struct cil_list *types)
 		child = i1->data;
 		if (child->bounds != NULL) {
 			parent = child->bounds;
-			fprintf(out, "typebounds %s %s\n", parent->datum.fqn, child->datum.fqn);
+			fprintf(out, "typebounds %s %s;\n", parent->datum.fqn, child->datum.fqn);
 		}
 	}
 }
@@ -1085,7 +1085,7 @@ static void cil_typeattributes_to_policy(FILE *out, struct cil_list *types, stru
 		type = i1->data;
 		cil_list_for_each(i2, attributes) {
 			attribute = i2->data;
-			if (!attribute->used)
+			if (!attribute->keep)
 				continue;
 			if (ebitmap_get_bit(attribute->types, type->value)) {
 				if (first) {
@@ -1757,6 +1757,8 @@ static void cil_portcons_to_policy(FILE *out, struct cil_sort *portcons, int mls
 			fprintf(out, "tcp ");
 		} else if (portcon->proto == CIL_PROTOCOL_DCCP) {
 			fprintf(out, "dccp ");
+		} else if (portcon->proto == CIL_PROTOCOL_SCTP) {
+			fprintf(out, "sctp ");
 		}
 		if (portcon->port_low == portcon->port_high) {
 			fprintf(out, "%d ", portcon->port_low);
@@ -1779,7 +1781,7 @@ static void cil_netifcons_to_policy(FILE *out, struct cil_sort *netifcons, int m
 		cil_context_to_policy(out, netifcon->if_context, mls);
 		fprintf(out, " ");
 		cil_context_to_policy(out, netifcon->packet_context, mls);
-		fprintf(out, ";\n");
+		fprintf(out, "\n");
 	}
 }
 
@@ -1836,7 +1838,7 @@ static void cil_nodecons_to_policy(FILE *out, struct cil_sort *nodecons, int mls
 		}
 
 		cil_context_to_policy(out, nodecon->context, mls);
-		fprintf(out, ";\n");
+		fprintf(out, "\n");
 	}
 }
 
@@ -1928,9 +1930,9 @@ void cil_gen_policy(FILE *out, struct cil_db *db)
 	cil_commons_to_policy(out, lists[CIL_LIST_COMMON]);
 	cil_classes_to_policy(out, db->classorder);
 
-	cil_defaults_to_policy(out, lists[CIL_LIST_DEFAULT_USER], CIL_KEY_DEFAULTUSER);
-	cil_defaults_to_policy(out, lists[CIL_LIST_DEFAULT_ROLE], CIL_KEY_DEFAULTROLE);
-	cil_defaults_to_policy(out, lists[CIL_LIST_DEFAULT_TYPE], CIL_KEY_DEFAULTTYPE);
+	cil_defaults_to_policy(out, lists[CIL_LIST_DEFAULT_USER], "default_user");
+	cil_defaults_to_policy(out, lists[CIL_LIST_DEFAULT_ROLE], "default_role");
+	cil_defaults_to_policy(out, lists[CIL_LIST_DEFAULT_TYPE], "default_type");
 
 	if (db->mls == CIL_TRUE) {
 		cil_default_ranges_to_policy(out, lists[CIL_LIST_DEFAULT_RANGE]);

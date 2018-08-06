@@ -328,7 +328,7 @@ end_arch_check:
 		spec->lr.ctx_raw = str_buf;
 
 		if (strcmp(spec->lr.ctx_raw, "<<none>>") && rec->validating) {
-			if (selabel_validate(rec, &spec->lr) < 0) {
+			if (selabel_validate(&spec->lr) < 0) {
 				selinux_log(SELINUX_ERROR,
 					    "%s: context %s is invalid\n",
 					    path, spec->lr.ctx_raw);
@@ -389,10 +389,12 @@ end_arch_check:
 			spec->prefix_len = prefix_len;
 		}
 
-		rc = regex_load_mmap(mmap_area, &spec->regex, reg_arch_matches);
+		rc = regex_load_mmap(mmap_area, &spec->regex, reg_arch_matches,
+				     &spec->regex_compiled);
 		if (rc < 0)
 			goto out;
 
+		__pthread_mutex_init(&spec->regex_lock, NULL);
 		data->nspec++;
 	}
 
@@ -810,6 +812,7 @@ static void closef(struct selabel_handle *rec)
 		free(spec->lr.ctx_trans);
 		free(spec->lr.ctx_raw);
 		regex_data_free(spec->regex);
+		__pthread_mutex_destroy(&spec->regex_lock);
 		if (spec->from_mmap)
 			continue;
 		free(spec->regex_str);

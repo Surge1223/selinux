@@ -49,10 +49,13 @@ LIBSEPOL_1.1 {
 	cil_set_mls;
 	cil_set_attrs_expand_generated;
 	cil_set_attrs_expand_size;
+	cil_set_multiple_decls;
 	cil_write_policy_conf;
 	sepol_ppfile_to_module_package;
 	sepol_module_package_to_cil;
 	sepol_module_policydb_to_cil;
 	sepol_kernel_policydb_to_cil;
 	sepol_kernel_policydb_to_conf;
+	sepol_polcap_getnum;
+	sepol_polcap_getname;
 } LIBSEPOL_1.0;

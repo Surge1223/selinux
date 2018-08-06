@@ -30,6 +30,9 @@
 #ifndef IPPROTO_DCCP
 #define IPPROTO_DCCP 33
 #endif
+#ifndef IPPROTO_SCTP
+#define IPPROTO_SCTP 132
+#endif
 #include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -1914,10 +1917,12 @@ exit:
 	free(new_val);
 	free(val1);
 	free(val2);
-	while ((val1 = stack_pop(stack)) != NULL) {
-		free(val1);
+	if (stack != NULL) {
+		while ((val1 = stack_pop(stack)) != NULL) {
+			free(val1);
+		}
+		stack_destroy(&stack);
 	}
-	stack_destroy(&stack);
 
 	return rc;
 }
@@ -2656,6 +2661,7 @@ static int ocontext_selinux_port_to_cil(struct policydb *pdb, struct ocontext *p
 		case IPPROTO_TCP: protocol = "tcp"; break;
 		case IPPROTO_UDP: protocol = "udp"; break;
 		case IPPROTO_DCCP: protocol = "dccp"; break;
+		case IPPROTO_SCTP: protocol = "sctp"; break;
 		default:
 			log_err("Unknown portcon protocol: %i", portcon->u.port.protocol);
 			rc = -1;
@@ -2687,7 +2693,7 @@ static int ocontext_selinux_ibpkey_to_cil(struct policydb *pdb,
 	int rc = -1;
 	struct ocontext *ibpkeycon;
 	char subnet_prefix_str[INET6_ADDRSTRLEN];
-	struct in6_addr subnet_prefix = {0};
+	struct in6_addr subnet_prefix = IN6ADDR_ANY_INIT;
 	uint16_t high;
 	uint16_t low;
 

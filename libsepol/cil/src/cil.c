@@ -109,6 +109,7 @@ static void cil_init_keys(void)
 	CIL_KEY_UDP = cil_strpool_add("udp");
 	CIL_KEY_TCP = cil_strpool_add("tcp");
 	CIL_KEY_DCCP = cil_strpool_add("dccp");
+	CIL_KEY_SCTP = cil_strpool_add("sctp");
 	CIL_KEY_AUDITALLOW = cil_strpool_add("auditallow");
 	CIL_KEY_TUNABLEIF = cil_strpool_add("tunableif");
 	CIL_KEY_ALLOW = cil_strpool_add("allow");
@@ -1691,6 +1692,11 @@ void cil_set_mls(struct cil_db *db, int mls)
 	db->mls = mls;
 }
 
+void cil_set_multiple_decls(struct cil_db *db, int multiple_decls)
+{
+	db->multiple_decls = multiple_decls;
+}
+
 void cil_set_target_platform(struct cil_db *db, int target_platform)
 {
 	db->target_platform = target_platform;
@@ -2059,6 +2065,7 @@ void cil_typeattribute_init(struct cil_typeattribute **attr)
 	(*attr)->expr_list = NULL;
 	(*attr)->types = NULL;
 	(*attr)->used = CIL_FALSE;
+	(*attr)->keep = CIL_FALSE;
 }
 
 void cil_typeattributeset_init(struct cil_typeattributeset **attrset)

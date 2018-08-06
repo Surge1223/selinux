@@ -1,3 +1,4 @@
+PREFIX ?= /usr
 OPT_SUBDIRS ?= dbus gui mcstrans python restorecond sandbox semodule-utils
 SUBDIRS=libsepol libselinux libsemanage checkpolicy secilc policycoreutils $(OPT_SUBDIRS)
 PYSUBDIRS=libselinux libsemanage
@@ -6,13 +7,27 @@ DISTCLEANSUBDIRS=libselinux libsemanage
 ifeq ($(DEBUG),1)
 	export CFLAGS = -g3 -O0 -gdwarf-2 -fno-strict-aliasing -Wall -Wshadow -Werror -Wno-format
 	export LDFLAGS = -g
+else
+	export CFLAGS ?= -O2 -Werror -Wall -Wextra \
+		-Wmissing-format-attribute \
+		-Wmissing-noreturn \
+		-Wpointer-arith \
+		-Wshadow \
+		-Wstrict-prototypes \
+		-Wundef \
+		-Wunused \
+		-Wwrite-strings
 endif
 
 ifneq ($(DESTDIR),)
-	CFLAGS += -I$(DESTDIR)/usr/include
-	LDFLAGS += -L$(DESTDIR)/usr/lib
+	LIBDIR ?= $(DESTDIR)$(PREFIX)/lib
+	LIBSEPOLA ?= $(LIBDIR)/libsepol.a
+
+	CFLAGS += -I$(DESTDIR)$(PREFIX)/include
+	LDFLAGS += -L$(DESTDIR)$(PREFIX)/lib -L$(LIBDIR)
 	export CFLAGS
 	export LDFLAGS
+	export LIBSEPOLA
 endif
 
 all install relabel clean test indent:

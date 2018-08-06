@@ -1,6 +1,6 @@
 
 /*
- * Author : Stephen Smalley, <sds@epoch.ncsc.mil> 
+ * Author : Stephen Smalley, <sds@tycho.nsa.gov>
  */
 
 /*
@@ -68,6 +68,9 @@
 #include <netinet/in.h>
 #ifndef IPPROTO_DCCP
 #define IPPROTO_DCCP 33
+#endif
+#ifndef IPPROTO_SCTP
+#define IPPROTO_SCTP 132
 #endif
 #include <arpa/inet.h>
 #include <fcntl.h>
@@ -944,6 +947,8 @@ int main(int argc, char **argv)
 				protocol = IPPROTO_UDP;
 			else if (!strcmp(ans, "dccp") || !strcmp(ans, "DCCP"))
 				protocol = IPPROTO_DCCP;
+			else if (!strcmp(ans, "sctp") || !strcmp(ans, "SCTP"))
+				protocol = IPPROTO_SCTP;
 			else {
 				printf("unknown protocol\n");
 				break;

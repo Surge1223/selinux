@@ -171,7 +171,7 @@ def get_interface_format_text(interface, path="/usr/share/selinux/devel/policy.x
 
 
 def get_interface_compile_format_text(interfaces_dict, interface):
-    from templates import test_module
+    from .templates import test_module
     param_tmp = []
     for i in interfaces_dict[interface][0]:
         param_tmp.append(test_module.dict_values[i])
@@ -181,7 +181,7 @@ def get_interface_compile_format_text(interfaces_dict, interface):
 
 
 def generate_compile_te(interface, idict, name="compiletest"):
-    from templates import test_module
+    from .templates import test_module
     te = ""
     te += re.sub("TEMPLATETYPE", name, test_module.te_test_module)
     te += get_interface_compile_format_text(idict, interface)
@@ -220,7 +220,7 @@ def interface_compile_test(interface, path="/usr/share/selinux/devel/policy.xml"
     idict = get_interface_dict(path)
 
     if not (interface.split("_")[0] in exclude_interfaces or idict[interface][2] in exclude_interface_type):
-        print(_("Compiling %s interface" % interface))
+        print(_("Compiling %s interface") % interface)
         try:
             fd = open(policy_files['te'], "w")
             fd.write(generate_compile_te(interface, idict))
@@ -237,4 +237,4 @@ def interface_compile_test(interface, path="/usr/share/selinux/devel/policy.xml"
                 os.remove(v)
 
     else:
-        sys.stderr.write(_("\nCompiling of %s interface is not supported." % interface))
+        sys.stderr.write(_("\nCompiling of %s interface is not supported.") % interface)
