@@ -159,7 +159,7 @@ checkbool:
 	 * values across a reload, so we do not need to 
 	 * preserve them in userspace.
 	 */
-	if (preservebools && uname(&uts) == 0 && strverscmp(uts.release, "2.6.22") >= 0)
+	if (preservebools && uname(&uts) == 0)
 		preservebools = 0;
 
 	if (usesepol) {

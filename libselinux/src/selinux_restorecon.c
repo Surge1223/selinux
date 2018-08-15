@@ -239,7 +239,7 @@ static int exclude_non_seclabel_mounts(void)
 	char *buf = NULL, *item;
 
 	/* Check to see if the kernel supports seclabel */
-	if (uname(&uts) == 0 && strverscmp(uts.release, "2.6.30") < 0)
+	if (uname(&uts) == 0)
 		return 0;
 
 	fp = fopen("/proc/mounts", "re");

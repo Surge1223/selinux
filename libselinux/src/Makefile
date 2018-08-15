@@ -87,7 +87,7 @@ CFLAGS ?= -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissi
           -fstack-protector-all --param=ssp-buffer-size=4 -fexceptions \
           -fasynchronous-unwind-tables -fdiagnostics-show-option -funit-at-a-time \
           -Werror -Wno-aggregate-return -Wno-redundant-decls \
-          $(EXTRA_CFLAGS)
+          -Wno-implicit-function-declaration $(EXTRA_CFLAGS)
 
 LD_SONAME_FLAGS=-soname,$(LIBSO),-z,defs,-z,relro
 
@@ -99,7 +99,8 @@ endif
 
 PCRE_LDLIBS ?= -lpcre
 
-override CFLAGS += -I../include -D_GNU_SOURCE $(DISABLE_FLAGS) $(PCRE_CFLAGS)
+override CFLAGS += -I../include -D_GNU_SOURCE -I/opt/aarch64/sysroot/usr/include -std=gnu99 -D_POSIX_C_SOURCE \
+-D__BIONIC__ -D__ANDORID__  $(DISABLE_FLAGS) $(PCRE_CFLAGS)
 
 SWIG_CFLAGS += -Wno-error -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-parameter \
 		-Wno-shadow -Wno-uninitialized -Wno-missing-prototypes -Wno-missing-declarations
