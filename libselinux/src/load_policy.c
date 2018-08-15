@@ -11,10 +11,8 @@
 #include <string.h>
 #include <errno.h>
 #include "selinux_internal.h"
-#ifndef ANDROID
 #include <sepol/sepol.h>
 #include <sepol/policydb.h>
-#endif
 #include <dlfcn.h>
 #include "policy.h"
 #include <limits.h>
@@ -47,7 +45,6 @@ int security_load_policy(void *data, size_t len)
 
 hidden_def(security_load_policy)
 
-#ifndef ANDROID
 int load_setlocaldefs hidden = 1;
 
 #undef max
@@ -304,6 +301,7 @@ checkbool:
 }
 
 hidden_def(selinux_mkload_policy)
+hidden_def(load_setlocaldefs)
 
 /*
  * Mount point for selinuxfs. 
@@ -468,4 +466,3 @@ int selinux_init_load_policy(int *enforce)
 	 */
 	return -1;
 }
-#endif

@@ -181,7 +181,7 @@ common_includes := \
   libselinux/src \
   libselinux/include \
   libselinux/include/selinux \
-	/opt/androideabi/include/python2.7 \
+  /opt/androideabi/include/python2.7 \
   /usr/include/python3.*
 
 yacc_flags := -x c -std=gnu89
