@@ -1,6 +1,8 @@
-PYTHON ?= python
+PYTHON ?= python3
+SECILC ?= secilc
 
 # Installation directories.
+LINGUAS ?= ru
 PREFIX ?= /usr
 BINDIR ?= $(PREFIX)/bin
 MANDIR ?= $(PREFIX)/share/man
@@ -22,8 +24,11 @@ sepolgen-ifgen-attr-helper: sepolgen-ifgen-attr-helper.o $(LIBSEPOLA)
 audit2why:
 	ln -sf audit2allow audit2why
 
-test: all
+test: all test_dummy_policy
 	@$(PYTHON) test_audit2allow.py -v
+
+test_dummy_policy: test_dummy_policy.cil
+	$(SECILC) -o $@ -f /dev/null $<
 
 install: all
 	-mkdir -p $(DESTDIR)$(BINDIR)
@@ -34,9 +39,15 @@ install: all
 	-mkdir -p $(DESTDIR)$(MANDIR)/man1
 	install -m 644 audit2allow.1 $(DESTDIR)$(MANDIR)/man1/
 	install -m 644 audit2why.1 $(DESTDIR)$(MANDIR)/man1/
+	for lang in $(LINGUAS) ; do \
+		if [ -e $${lang} ] ; then \
+			mkdir -p $(DESTDIR)$(MANDIR)/$${lang}/man1 ; \
+			install -m 644 $${lang}/*.1 $(DESTDIR)$(MANDIR)/$${lang}/man1/ ; \
+		fi ; \
+	done
 
 clean:
-	rm -f *~ *.o sepolgen-ifgen-attr-helper
+	rm -f *~ *.o sepolgen-ifgen-attr-helper test_dummy_policy
 
 indent:
 	../../scripts/Lindent $(wildcard *.[ch])

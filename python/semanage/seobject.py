@@ -1,4 +1,3 @@
-#! /usr/bin/python -Es
 # Copyright (C) 2005-2013 Red Hat
 # see file 'COPYING' for use and warranty information
 #
@@ -260,6 +259,8 @@ class semanageRecords:
         if self.store == "" or self.store == localstore:
             self.mylog = logger()
         else:
+            sepolicy.load_store_policy(self.store)
+            selinux.selinux_set_policy_root("%s%s" % (selinux.selinux_path(), self.store))
             self.mylog = nulllogger()
 
     def set_reload(self, load):
@@ -747,7 +748,10 @@ class loginRecords(semanageRecords):
         l = []
         ddict = self.get_all(True)
         for k in sorted(ddict.keys()):
-            l.append("-a -s %s -r '%s' %s" % (ddict[k][0], ddict[k][1], k))
+            if ddict[k][1]:
+                l.append("-a -s %s -r '%s' %s" % (ddict[k][0], ddict[k][1], k))
+            else:
+                l.append("-a -s %s %s" % (ddict[k][0], k))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -1014,7 +1018,10 @@ class seluserRecords(semanageRecords):
         l = []
         ddict = self.get_all(True)
         for k in sorted(ddict.keys()):
-            l.append("-a -L %s -r %s -R '%s' %s" % (ddict[k][1], ddict[k][2], ddict[k][3], k))
+            if ddict[k][1] or ddict[k][2]:
+                l.append("-a -L %s -r %s -R '%s' %s" % (ddict[k][1], ddict[k][2], ddict[k][3], k))
+            else:
+                l.append("-a -R '%s' %s" % (ddict[k][3], k))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -1037,13 +1044,15 @@ class seluserRecords(semanageRecords):
 
 
 class portRecords(semanageRecords):
-    try:
-        valid_types = list(list(sepolicy.info(sepolicy.ATTRIBUTE, "port_type"))[0]["types"])
-    except RuntimeError:
-        valid_types = []
+
+    valid_types = []
 
     def __init__(self, args = None):
         semanageRecords.__init__(self, args)
+        try:
+            self.valid_types = list(list(sepolicy.info(sepolicy.ATTRIBUTE, "port_type"))[0]["types"])
+        except RuntimeError:
+            pass
 
     def __genkey(self, port, proto):
         if proto == "tcp":
@@ -1080,6 +1089,8 @@ class portRecords(semanageRecords):
 
         if type == "":
             raise ValueError(_("Type is required"))
+
+        type = sepolicy.get_real_type_name(type)
 
         if type not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be a port type") % type)
@@ -1145,6 +1156,7 @@ class portRecords(semanageRecords):
             else:
                 raise ValueError(_("Requires setype"))
 
+        setype = sepolicy.get_real_type_name(setype)
         if setype and setype not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be a port type") % setype)
 
@@ -1289,10 +1301,11 @@ class portRecords(semanageRecords):
         l = []
         ddict = self.get_all(True)
         for k in sorted(ddict.keys()):
-            if k[0] == k[1]:
-                l.append("-a -t %s -p %s %s" % (ddict[k][0], k[2], k[0]))
+            port = k[0] if k[0] == k[1] else "%s-%s" % (k[0], k[1])
+            if ddict[k][1]:
+                l.append("-a -t %s -r '%s' -p %s %s" % (ddict[k][0], ddict[k][1], k[2], port))
             else:
-                l.append("-a -t %s -p %s %s-%s" % (ddict[k][0], k[2], k[0], k[1]))
+                l.append("-a -t %s -p %s %s" % (ddict[k][0], k[2], port))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -1311,14 +1324,16 @@ class portRecords(semanageRecords):
             print(rec)
 
 class ibpkeyRecords(semanageRecords):
-    try:
-        q = setools.TypeQuery(setools.SELinuxPolicy(sepolicy.get_installed_policy()), attrs=["ibpkey_type"])
-        valid_types = sorted(str(t) for t in q.results())
-    except:
-        valid_types = []
+
+    valid_types = []
 
     def __init__(self, args = None):
         semanageRecords.__init__(self, args)
+        try:
+            q = setools.TypeQuery(setools.SELinuxPolicy(sepolicy.get_store_policy(self.store)), attrs=["ibpkey_type"])
+            self.valid_types = sorted(str(t) for t in q.results())
+        except:
+            pass
 
     def __genkey(self, pkey, subnet_prefix):
         if subnet_prefix == "":
@@ -1348,6 +1363,8 @@ class ibpkeyRecords(semanageRecords):
 
         if type == "":
             raise ValueError(_("Type is required"))
+
+        type = sepolicy.get_real_type_name(type)
 
         if type not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be a ibpkey type") % type)
@@ -1410,6 +1427,8 @@ class ibpkeyRecords(semanageRecords):
                 raise ValueError(_("Requires setype or serange"))
             else:
                 raise ValueError(_("Requires setype"))
+
+        setype = sepolicy.get_real_type_name(setype)
 
         if setype and setype not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be a ibpkey type") % setype)
@@ -1542,10 +1561,11 @@ class ibpkeyRecords(semanageRecords):
         ddict = self.get_all(True)
 
         for k in sorted(ddict.keys()):
-            if k[0] == k[1]:
-                l.append("-a -t %s -x %s %s" % (ddict[k][0], k[2], k[0]))
+            port = k[0] if k[0] == k[1] else "%s-%s" % (k[0], k[1])
+            if ddict[k][1]:
+                l.append("-a -t %s -r '%s' -x %s %s" % (ddict[k][0], ddict[k][1], k[2], port))
             else:
-                l.append("-a -t %s -x %s %s-%s" % (ddict[k][0], k[2], k[0], k[1]))
+                l.append("-a -t %s -x %s %s" % (ddict[k][0], k[2], port))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -1564,14 +1584,16 @@ class ibpkeyRecords(semanageRecords):
             print(rec)
 
 class ibendportRecords(semanageRecords):
-    try:
-        q = setools.TypeQuery(setools.SELinuxPolicy(sepolicy.get_installed_policy()), attrs=["ibendport_type"])
-        valid_types = set(str(t) for t in q.results())
-    except:
-        valid_types = []
+
+    valid_types = []
 
     def __init__(self, args = None):
         semanageRecords.__init__(self, args)
+        try:
+            q = setools.TypeQuery(setools.SELinuxPolicy(sepolicy.get_store_policy(self.store)), attrs=["ibendport_type"])
+            self.valid_types = set(str(t) for t in q.results())
+        except:
+            pass
 
     def __genkey(self, ibendport, ibdev_name):
         if ibdev_name == "":
@@ -1596,6 +1618,8 @@ class ibendportRecords(semanageRecords):
 
         if type == "":
             raise ValueError(_("Type is required"))
+
+        type = sepolicy.get_real_type_name(type)
 
         if type not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be an ibendport type") % type)
@@ -1657,6 +1681,8 @@ class ibendportRecords(semanageRecords):
                 raise ValueError(_("Requires setype or serange"))
             else:
                 raise ValueError(_("Requires setype"))
+
+        setype = sepolicy.get_real_type_name(setype)
 
         if setype and setype not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be an ibendport type") % setype)
@@ -1782,7 +1808,10 @@ class ibendportRecords(semanageRecords):
         ddict = self.get_all(True)
 
         for k in sorted(ddict.keys()):
-            l.append("-a -t %s -r %s -z %s %s" % (ddict[k][0], ddict[k][1], k[1], k[0]))
+            if ddict[k][1]:
+                l.append("-a -t %s -r '%s' -z %s %s" % (ddict[k][0], ddict[k][1], k[1], k[0]))
+            else:
+                l.append("-a -t %s -z %s %s" % (ddict[k][0], k[1], k[0]))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -1801,14 +1830,16 @@ class ibendportRecords(semanageRecords):
             print(rec)
 
 class nodeRecords(semanageRecords):
-    try:
-        valid_types = list(list(sepolicy.info(sepolicy.ATTRIBUTE, "node_type"))[0]["types"])
-    except RuntimeError:
-        valid_types = []
+
+    valid_types = []
 
     def __init__(self, args = None):
         semanageRecords.__init__(self, args)
         self.protocol = ["ipv4", "ipv6"]
+        try:
+            self.valid_types = list(list(sepolicy.info(sepolicy.ATTRIBUTE, "node_type"))[0]["types"])
+        except RuntimeError:
+            pass
 
     def validate(self, addr, mask, protocol):
         newaddr = addr
@@ -1846,6 +1877,8 @@ class nodeRecords(semanageRecords):
 
         if ctype == "":
             raise ValueError(_("SELinux node type is required"))
+
+        ctype = sepolicy.get_real_type_name(ctype)
 
         if ctype not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be a node type") % ctype)
@@ -1915,6 +1948,8 @@ class nodeRecords(semanageRecords):
 
         if serange == "" and setype == "":
             raise ValueError(_("Requires setype or serange"))
+
+        setype = sepolicy.get_real_type_name(setype)
 
         if setype and setype not in self.valid_types:
             raise ValueError(_("Type %s is invalid, must be a node type") % setype)
@@ -2018,7 +2053,10 @@ class nodeRecords(semanageRecords):
         l = []
         ddict = self.get_all(True)
         for k in sorted(ddict.keys()):
-            l.append("-a -M %s -p %s -t %s %s" % (k[1], k[2], ddict[k][2], k[0]))
+            if ddict[k][3]:
+                l.append("-a -M %s -p %s -t %s -r '%s' %s" % (k[1], k[2], ddict[k][2], ddict[k][3], k[0]))
+            else:
+                l.append("-a -M %s -p %s -t %s %s" % (k[1], k[2], ddict[k][2], k[0]))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -2212,7 +2250,10 @@ class interfaceRecords(semanageRecords):
         l = []
         ddict = self.get_all(True)
         for k in sorted(ddict.keys()):
-            l.append("-a -t %s %s" % (ddict[k][2], k))
+            if ddict[k][3]:
+                l.append("-a -t %s -r '%s' %s" % (ddict[k][2], ddict[k][3], k))
+            else:
+                l.append("-a -t %s %s" % (ddict[k][2], k))
         return l
 
     def list(self, heading=1, locallist=0):
@@ -2232,15 +2273,17 @@ class interfaceRecords(semanageRecords):
 
 
 class fcontextRecords(semanageRecords):
-    try:
-        valid_types = list(list(sepolicy.info(sepolicy.ATTRIBUTE, "file_type"))[0]["types"])
-        valid_types += list(list(sepolicy.info(sepolicy.ATTRIBUTE, "device_node"))[0]["types"])
-        valid_types.append("<<none>>")
-    except RuntimeError:
-        valid_types = []
+
+    valid_types = []
 
     def __init__(self, args = None):
         semanageRecords.__init__(self, args)
+        try:
+            self.valid_types = list(list(sepolicy.info(sepolicy.ATTRIBUTE, "file_type"))[0]["types"])
+            self.valid_types += list(list(sepolicy.info(sepolicy.ATTRIBUTE, "device_node"))[0]["types"])
+        except RuntimeError:
+            pass
+
         self.equiv = {}
         self.equiv_dist = {}
         self.equal_ind = False
@@ -2363,8 +2406,10 @@ class fcontextRecords(semanageRecords):
         if type == "":
             raise ValueError(_("SELinux Type is required"))
 
-        if type not in self.valid_types:
-            raise ValueError(_("Type %s is invalid, must be a file or device type") % type)
+        if type != "<<none>>":
+            type = sepolicy.get_real_type_name(type)
+            if type not in self.valid_types:
+                raise ValueError(_("Type %s is invalid, must be a file or device type") % type)
 
         (rc, k) = semanage_fcontext_key_create(self.sh, target, file_types[ftype])
         if rc < 0:
@@ -2426,8 +2471,10 @@ class fcontextRecords(semanageRecords):
     def __modify(self, target, setype, ftype, serange, seuser):
         if serange == "" and setype == "" and seuser == "":
             raise ValueError(_("Requires setype, serange or seuser"))
-        if setype and setype not in self.valid_types:
-            raise ValueError(_("Type %s is invalid, must be a file or device type") % setype)
+        if setype not in ["",  "<<none>>"]:
+            setype = sepolicy.get_real_type_name(setype)
+            if setype not in self.valid_types:
+                raise ValueError(_("Type %s is invalid, must be a file or device type") % setype)
 
         self.validate(target)
 
@@ -2591,7 +2638,10 @@ class fcontextRecords(semanageRecords):
         fcon_dict = self.get_all(True)
         for k in sorted(fcon_dict.keys()):
             if fcon_dict[k]:
-                l.append("-a -f %s -t %s '%s'" % (file_type_str_to_option[k[1]], fcon_dict[k][2], k[0]))
+                if fcon_dict[k][3]:
+                    l.append("-a -f %s -t %s -r '%s' '%s'" % (file_type_str_to_option[k[1]], fcon_dict[k][2], fcon_dict[k][3], k[0]))
+                else:
+                    l.append("-a -f %s -t %s '%s'" % (file_type_str_to_option[k[1]], fcon_dict[k][2], k[0]))
 
         if len(self.equiv):
             for target in self.equiv.keys():
@@ -2756,7 +2806,7 @@ class booleanRecords(semanageRecords):
             value = []
             name = semanage_bool_get_name(boolean)
             value.append(semanage_bool_get_value(boolean))
-            if self.modify_local and boolean in self.current_booleans:
+            if self.modify_local and name in self.current_booleans:
                 value.append(selinux.security_get_boolean_pending(name))
                 value.append(selinux.security_get_boolean_active(name))
             else:
@@ -2798,4 +2848,4 @@ class booleanRecords(semanageRecords):
             print("%-30s %s  %s %s\n" % (_("SELinux boolean"), _("State"), _("Default"), _("Description")))
         for k in sorted(ddict.keys()):
             if ddict[k]:
-                print("%-30s (%-5s,%5s)  %s" % (k, on_off[selinux.security_get_boolean_active(k)], on_off[ddict[k][2]], self.get_desc(k)))
+                print("%-30s (%-5s,%5s)  %s" % (k, on_off[ddict[k][2]], on_off[ddict[k][0]], self.get_desc(k)))

@@ -232,7 +232,7 @@ end_arch_check:
 
 	/* allocate the stems_data array */
 	rc = next_entry(&stem_map_len, mmap_area, sizeof(uint32_t));
-	if (rc < 0 || !stem_map_len)
+	if (rc < 0)
 		return -1;
 
 	/*
@@ -317,8 +317,10 @@ end_arch_check:
 			goto out;
 		}
 		rc = next_entry(str_buf, mmap_area, entry_len);
-		if (rc < 0)
+		if (rc < 0) {
+			free(str_buf);
 			goto out;
+		}
 
 		if (str_buf[entry_len - 1] != '\0') {
 			free(str_buf);

@@ -1,4 +1,3 @@
-#! /usr/bin/python -Es
 # Copyright (C) 2012-2013 Red Hat
 # AUTHOR: Dan Walsh <dwalsh@redhat.com>
 # AUTHOR: Miroslav Grepl <mgrepl@redhat.com>
@@ -169,9 +168,9 @@ def get_alphabet_manpages(manpage_list):
 
 def convert_manpage_to_html(html_manpage, manpage):
     try:
-            from commands import getstatusoutput
+        from commands import getstatusoutput
     except ImportError:
-            from subprocess import getstatusoutput
+        from subprocess import getstatusoutput
     rc, output = getstatusoutput("/usr/bin/groff -man -Thtml %s 2>/dev/null" % manpage)
     if rc == 0:
         print(html_manpage, "has been created")
@@ -539,7 +538,7 @@ class ManPage:
                     self.fd = fd
                     self.man_page_path = man_page_path
             except KeyError:
-                continue;
+                continue
             self.attributes[domain_type] = next(sepolicy.info(sepolicy.TYPE, ("%s") % domain_type))["attributes"]
 
         self._header()
