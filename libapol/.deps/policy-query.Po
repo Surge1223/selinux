@@ -1,0 +1,360 @@
+policy-query.o: policy-query.c /usr/include/stdc-predef.h \
+ policy-query-internal.h ../../config.h ../include/apol/policy.h \
+ ../include/apol/policy-path.h ../include/apol/vector.h \
+ /usr/include/stdlib.h /usr/include/features.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/waitflags.h \
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/byteswap-16.h /usr/include/xlocale.h \
+ /usr/include/x86_64-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/sys/select.h \
+ /usr/include/x86_64-linux-gnu/bits/select.h \
+ /usr/include/x86_64-linux-gnu/bits/sigset.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/select2.h \
+ /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
+ /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h \
+ ../../libqpol/include/qpol/iterator.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h \
+ ../../libqpol/include/qpol/policy.h \
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ ../../libqpol/include/qpol/avrule_query.h \
+ ../../libqpol/include/qpol/class_perm_query.h \
+ ../../libqpol/include/qpol/cond_query.h \
+ ../../libqpol/include/qpol/bool_query.h \
+ ../../libqpol/include/qpol/type_query.h \
+ ../../libqpol/include/qpol/constraint_query.h \
+ ../../libqpol/include/qpol/context_query.h \
+ ../../libqpol/include/qpol/user_query.h \
+ ../../libqpol/include/qpol/mls_query.h \
+ ../../libqpol/include/qpol/role_query.h \
+ ../../libqpol/include/qpol/fs_use_query.h \
+ ../../libqpol/include/qpol/isid_query.h \
+ ../../libqpol/include/qpol/genfscon_query.h \
+ ../../libqpol/include/qpol/mlsrule_query.h \
+ ../../libqpol/include/qpol/module.h \
+ ../../libqpol/include/qpol/netifcon_query.h \
+ ../../libqpol/include/qpol/nodecon_query.h \
+ ../../libqpol/include/qpol/permissive_query.h \
+ ../../libqpol/include/qpol/bounds_query.h \
+ ../../libqpol/include/qpol/default_object_query.h \
+ ../../libqpol/include/qpol/polcap_query.h \
+ ../../libqpol/include/qpol/portcon_query.h /usr/include/netinet/in.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/socket2.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h \
+ ../../libqpol/include/qpol/rbacrule_query.h \
+ ../../libqpol/include/qpol/ftrule_query.h \
+ ../../libqpol/include/qpol/syn_rule_query.h \
+ ../../libqpol/include/qpol/terule_query.h ../include/apol/policy-query.h \
+ ../include/apol/type-query.h ../include/apol/policy.h \
+ ../include/apol/class-perm-query.h ../include/apol/role-query.h \
+ ../include/apol/user-query.h ../include/apol/mls-query.h \
+ ../include/apol/mls_level.h ../include/apol/mls_range.h \
+ ../include/apol/bool-query.h ../include/apol/isid-query.h \
+ ../include/apol/context-query.h ../include/apol/netcon-query.h \
+ ../include/apol/fscon-query.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/string.h \
+ /usr/include/x86_64-linux-gnu/bits/string2.h \
+ /usr/include/x86_64-linux-gnu/bits/string3.h \
+ ../include/apol/permissive-query.h ../include/apol/polcap-query.h \
+ ../include/apol/bounds-query.h ../include/apol/default-object-query.h \
+ ../include/apol/avrule-query.h ../include/apol/terule-query.h \
+ ../include/apol/condrule-query.h ../include/apol/rbacrule-query.h \
+ ../include/apol/ftrule-query.h ../include/apol/range_trans-query.h \
+ ../include/apol/constraint-query.h \
+ ../include/apol/domain-trans-analysis.h \
+ ../include/apol/infoflow-analysis.h ../include/apol/relabel-analysis.h \
+ ../include/apol/types-relation-analysis.h ../include/apol/util.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h ../include/apol/vector.h \
+ /usr/include/regex.h /usr/include/x86_64-linux-gnu/gnu/option-groups.h \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h
+
+/usr/include/stdc-predef.h:
+
+policy-query-internal.h:
+
+../../config.h:
+
+../include/apol/policy.h:
+
+../include/apol/policy-path.h:
+
+../include/apol/vector.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/features.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+
+/usr/include/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
+
+/usr/include/x86_64-linux-gnu/bits/byteswap-16.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/x86_64-linux-gnu/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/x86_64-linux-gnu/sys/select.h:
+
+/usr/include/x86_64-linux-gnu/bits/select.h:
+
+/usr/include/x86_64-linux-gnu/bits/sigset.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/select2.h:
+
+/usr/include/x86_64-linux-gnu/sys/sysmacros.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:
+
+../../libqpol/include/qpol/iterator.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h:
+
+../../libqpol/include/qpol/policy.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/x86_64-linux-gnu/bits/wchar.h:
+
+../../libqpol/include/qpol/avrule_query.h:
+
+../../libqpol/include/qpol/class_perm_query.h:
+
+../../libqpol/include/qpol/cond_query.h:
+
+../../libqpol/include/qpol/bool_query.h:
+
+../../libqpol/include/qpol/type_query.h:
+
+../../libqpol/include/qpol/constraint_query.h:
+
+../../libqpol/include/qpol/context_query.h:
+
+../../libqpol/include/qpol/user_query.h:
+
+../../libqpol/include/qpol/mls_query.h:
+
+../../libqpol/include/qpol/role_query.h:
+
+../../libqpol/include/qpol/fs_use_query.h:
+
+../../libqpol/include/qpol/isid_query.h:
+
+../../libqpol/include/qpol/genfscon_query.h:
+
+../../libqpol/include/qpol/mlsrule_query.h:
+
+../../libqpol/include/qpol/module.h:
+
+../../libqpol/include/qpol/netifcon_query.h:
+
+../../libqpol/include/qpol/nodecon_query.h:
+
+../../libqpol/include/qpol/permissive_query.h:
+
+../../libqpol/include/qpol/bounds_query.h:
+
+../../libqpol/include/qpol/default_object_query.h:
+
+../../libqpol/include/qpol/polcap_query.h:
+
+../../libqpol/include/qpol/portcon_query.h:
+
+/usr/include/netinet/in.h:
+
+/usr/include/x86_64-linux-gnu/sys/socket.h:
+
+/usr/include/x86_64-linux-gnu/sys/uio.h:
+
+/usr/include/x86_64-linux-gnu/bits/uio.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket_type.h:
+
+/usr/include/x86_64-linux-gnu/bits/sockaddr.h:
+
+/usr/include/x86_64-linux-gnu/asm/socket.h:
+
+/usr/include/asm-generic/socket.h:
+
+/usr/include/x86_64-linux-gnu/asm/sockios.h:
+
+/usr/include/asm-generic/sockios.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket2.h:
+
+/usr/include/x86_64-linux-gnu/bits/in.h:
+
+../../libqpol/include/qpol/rbacrule_query.h:
+
+../../libqpol/include/qpol/ftrule_query.h:
+
+../../libqpol/include/qpol/syn_rule_query.h:
+
+../../libqpol/include/qpol/terule_query.h:
+
+../include/apol/policy-query.h:
+
+../include/apol/type-query.h:
+
+../include/apol/policy.h:
+
+../include/apol/class-perm-query.h:
+
+../include/apol/role-query.h:
+
+../include/apol/user-query.h:
+
+../include/apol/mls-query.h:
+
+../include/apol/mls_level.h:
+
+../include/apol/mls_range.h:
+
+../include/apol/bool-query.h:
+
+../include/apol/isid-query.h:
+
+../include/apol/context-query.h:
+
+../include/apol/netcon-query.h:
+
+../include/apol/fscon-query.h:
+
+/usr/include/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/string2.h:
+
+/usr/include/x86_64-linux-gnu/bits/string3.h:
+
+../include/apol/permissive-query.h:
+
+../include/apol/polcap-query.h:
+
+../include/apol/bounds-query.h:
+
+../include/apol/default-object-query.h:
+
+../include/apol/avrule-query.h:
+
+../include/apol/terule-query.h:
+
+../include/apol/condrule-query.h:
+
+../include/apol/rbacrule-query.h:
+
+../include/apol/ftrule-query.h:
+
+../include/apol/range_trans-query.h:
+
+../include/apol/constraint-query.h:
+
+../include/apol/domain-trans-analysis.h:
+
+../include/apol/infoflow-analysis.h:
+
+../include/apol/relabel-analysis.h:
+
+../include/apol/types-relation-analysis.h:
+
+../include/apol/util.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
+
+../include/apol/vector.h:
+
+/usr/include/regex.h:
+
+/usr/include/x86_64-linux-gnu/gnu/option-groups.h:
+
+/usr/include/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
