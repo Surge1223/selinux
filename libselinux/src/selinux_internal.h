@@ -180,6 +180,7 @@ extern int selinux_page_size hidden;
 	} while (0)
 
 
+#define SELINUXDIR "/system/etc/selinux/"
 #define SELINUXCONFIG SELINUXDIR "config"
 
 extern int has_selinux_config hidden;

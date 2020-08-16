@@ -1,6 +1,8 @@
 LOCAL_PATH:= $(call my-dir)
 
-libselinux_src_files := \
+libselinux_src_files  := $(wildcard $(LOCAL_PATH)/libselinux/src/*.c)
+
+old:= \
   libselinux/src/audit2why.c \
   libselinux/src/avc.c \
   libselinux/src/avc_internal.c \
@@ -122,7 +124,7 @@ cil_src_files := \
   libsepol/cil/src/cil_reset_ast.c \
   libsepol/cil/src/cil_resolve_ast.c \
   libsepol/cil/src/cil_stack.c \
-9  libsepol/cil/src/cil_strpool.c \
+  libsepol/cil/src/cil_strpool.c \
   libsepol/cil/src/cil_symtab.c \
   libsepol/cil/src/cil_tree.c \
   libsepol/cil/src/cil_verify.c
@@ -185,6 +187,8 @@ common_includes := \
   libselinux/include/selinux \
   /opt/androideabi/include/python2.7 \
   /usr/include/python3.*
+  libselinux/src/android \
+  /opt/sdk/ndk-bundle/prebuilt/linux-x86_64/include/python2.7
 
 yacc_flags := -x c -std=gnu89
 
@@ -310,6 +314,7 @@ LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
 LOCAL_C_INCLUDES := $(common_includes)
 LOCAL_SRC_FILES := libselinux/utils/sefcontext_compile.c
 LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
 
 include $(BUILD_EXECUTABLE)
 
@@ -388,10 +393,12 @@ LOCAL_SRC_FILES := \
 LOCAL_MODULE := checkpolicy
 LOCAL_MODULE_TAGS := optional 
 LOCAL_C_INCLUDES := $(common_includes)
-LOCAL_CFLAGS := $(yacc_flags) $(common_cflags) 
-LOCAL_STATIC_LIBRARIES := libsepol 
-LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC 
-LOCAL_YACCFLAGS := -v 
+LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
+LOCAL_STATIC_LIBRARIES := libsepol
+LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC
+LOCAL_YACCFLAGS := -v
+LOCAL_LDFLAGS := -static
+
 include $(BUILD_EXECUTABLE)
 
 ##
@@ -414,6 +421,8 @@ LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
 LOCAL_STATIC_LIBRARIES := libsepol
 LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC 
 LOCAL_YACCFLAGS := -v
+LOCAL_LDFLAGS := -static
+
 include $(BUILD_EXECUTABLE)
 
 ##
@@ -428,6 +437,11 @@ LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
 LOCAL_STATIC_LIBRARIES := libsepol 
 LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC
 LOCAL_MODULE_TAGS := optional
+<<<<<<< HEAD
+=======
+LOCAL_LDFLAGS := -static
+
+>>>>>>> 3c85237ac9fec3403f5e970c8be284e0002020b8
 include $(BUILD_EXECUTABLE)
 
 ##6
@@ -442,4 +456,35 @@ LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
 LOCAL_STATIC_LIBRARIES := libsepol 
 LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC
 LOCAL_MODULE_TAGS := optional
+include $(BUILD_EXECUTABLE)
+
+##
+# matchpathcon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := matchpathcon
+LOCAL_STATIC_LIBRARIES := libselinux_static libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/matchpathcon.c
+LOCAL_MODULE_TAGS := optional
+CFLAGS := -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissing-include-dirs \
+          -Wunused -Wunknown-pragmas -Wstrict-aliasing -Wshadow -Wpointer-arith \
+          -Wbad-function-cast -Wcast-align -Wwrite-strings -Waggregate-return \
+          -Wstrict-prototypes -Wold-style-definition -Wmissing-prototypes \
+          -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute \
+          -Wredundant-decls -Wnested-externs -Winline -Winvalid-pch -Wvolatile-register-var \
+          -Wdisabled-optimization -Wbuiltin-macro-redefined \
+          -Wattributes -Wmultichar \
+          -Wdeprecated-declarations -Wdiv-by-zero -Wdouble-promotion -Wendif-labels -Wextra \
+          -Wformat-extra-args -Wformat-zero-length -Wformat=2 -Wmultichar \
+          -Woverflow -Wpointer-to-int-cast -Wpragmas \
+          -Wno-missing-field-initializers -Wno-sign-compare \
+          -Wno-format-nonliteral -Wp,-D_FORTIFY_SOURCE=2 \
+          -fstack-protector-all --param=ssp-buxzffer-size=4 -fexceptions \
+          -fasynchronous-unwind-tables -fdiagnostics-show-option -funit-at-a-time \
+          -Werror -Wno-aggregate-return -Wno-redundant-decls
+
+LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags) $(CFLAGS)
+
 include $(BUILD_EXECUTABLE)

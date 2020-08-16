@@ -17,6 +17,12 @@
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
+#ifdef NO_FILE_BACKEND
+#define CONFIG_FILE_BACKEND(fnptr) NULL
+#else
+#define CONFIG_FILE_BACKEND(fnptr) &fnptr
+#endif
+
 #ifdef NO_MEDIA_BACKEND
 #define CONFIG_MEDIA_BACKEND(fnptr) NULL
 #else
@@ -46,7 +52,7 @@ typedef int (*selabel_initfunc)(struct selabel_handle *rec,
 				unsigned nopts);
 
 static selabel_initfunc initfuncs[] = {
-	&selabel_file_init,
+	CONFIG_FILE_BACKEND(selabel_file_init),
 	CONFIG_MEDIA_BACKEND(selabel_media_init),
 	CONFIG_X_BACKEND(selabel_x_init),
 	CONFIG_DB_BACKEND(selabel_db_init),
@@ -143,7 +149,11 @@ static int selabel_fini(struct selabel_handle *rec,
 			    struct selabel_lookup_rec *lr,
 			    int translating)
 {
-	if (compat_validate(rec, lr, rec->spec_file, lr->lineno))
+	char *path = NULL;
+
+	if (rec->spec_files)
+		path = rec->spec_files[0];
+	if (compat_validate(rec, lr, path, lr->lineno))
 		return -1;
 
 	if (translating && !lr->ctx_trans &&
@@ -226,11 +236,9 @@ struct selabel_handle *selabel_open(unsigned int backend,
 	rec->digest = selabel_is_digest_set(opts, nopts, rec->digest);
 
 	if ((*initfuncs[backend])(rec, opts, nopts)) {
-		free(rec->spec_file);
-		free(rec);
+		selabel_close(rec);
 		rec = NULL;
 	}
-
 out:
 	return rec;
 }
@@ -337,10 +345,17 @@ int selabel_digest(struct selabel_handle *rec,
 
 void selabel_close(struct selabel_handle *rec)
 {
+	size_t i;
+
+	if (rec->spec_files) {
+		for (i = 0; i < rec->spec_files_len; i++)
+			free(rec->spec_files[i]);
+		free(rec->spec_files);
+	}
 	if (rec->digest)
 		selabel_digest_fini(rec->digest);
-	rec->func_close(rec);
-	free(rec->spec_file);
+	if (rec->func_close)
+		rec->func_close(rec);
 	free(rec);
 }
 
