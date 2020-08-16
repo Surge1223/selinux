@@ -63,6 +63,54 @@ old:= \
   libselinux/src/sha1.c \
   libselinux/src/stringrep.c
 
+common_src_files2 := \
+  libsepol/src/assertion.c \
+  libsepol/src/avrule_block.c \
+  libsepol/src/avtab.c \
+  libsepol/src/boolean_record.c \
+  libsepol/src/booleans.c \
+  libsepol/src/conditional.c \
+  libsepol/src/constraint.c \
+  libsepol/src/context.c \
+  libsepol/src/context_record.c \
+  libsepol/src/debug.c \
+  libsepol/src/ebitmap.c \
+  libsepol/src/expand.c \
+  libsepol/src/genbools.c \
+  libsepol/src/genusers.c \
+  libsepol/src/handle.c \
+  libsepol/src/hashtab.c \
+  libsepol/src/hierarchy.c \
+  libsepol/src/ibendport_record.c \
+  libsepol/src/ibendports.c \
+  libsepol/src/ibpkey_record.c \
+  libsepol/src/ibpkeys.c \
+  libsepol/src/iface_record.c \
+  libsepol/src/interfaces.c \
+  libsepol/src/kernel_to_cil.c \
+  libsepol/src/kernel_to_common.c \
+  libsepol/src/kernel_to_conf.c \
+  libsepol/src/link.c \
+  libsepol/src/mls.c \
+  libsepol/src/module.c \
+  libsepol/src/module_to_cil.c \
+  libsepol/src/node_record.c \
+  libsepol/src/nodes.c \
+  libsepol/src/polcaps.c \
+  libsepol/src/policydb.c \
+  libsepol/src/policydb_convert.c \
+  libsepol/src/policydb_public.c \
+  libsepol/src/port_record.c \
+  libsepol/src/ports.c \
+  libsepol/src/roles.c \
+  libsepol/src/services.c \
+  libsepol/src/sidtab.c \
+  libsepol/src/symtab.c \
+  libsepol/src/user_record.c \
+  libsepol/src/users.c \
+  libsepol/src/util.c \
+  libsepol/src/write.c
+
 libselinux_android_srcs := \
   libselinux/src/android/android.c \
   libselinux/src/android/android_host.c \
@@ -107,6 +155,31 @@ common_src_files := \
   libsepol/src/users.c \
   libsepol/src/util.c \
   libsepol/src/write.c
+
+cil_src_files2 := \
+  libsepol/cil/src/android.c \
+  libsepol/cil/src/cil.c \
+  libsepol/cil/src/cil_binary.c \
+  libsepol/cil/src/cil_build_ast.c \
+  libsepol/cil/src/cil_copy_ast.c \
+  libsepol/cil/src/cil_find.c \
+  libsepol/cil/src/cil_fqn.c \
+  libsepol/cil/src/cil_lexer.c \
+  libsepol/cil/src/cil_list.c \
+  libsepol/cil/src/cil_log.c \
+  libsepol/cil/src/cil_mem.c \
+  libsepol/cil/src/cil_parser.c \
+  libsepol/cil/src/cil_policy.c \
+  libsepol/cil/src/cil_post.c \
+  libsepol/cil/src/cil_reset_ast.c \
+  libsepol/cil/src/cil_resolve_ast.c \
+  libsepol/cil/src/cil_stack.c \
+  libsepol/cil/src/cil_strpool.c \
+  libsepol/cil/src/cil_symtab.c \
+  libsepol/cil/src/cil_tree.c \
+  libsepol/cil/src/cil_verify.c \
+  libsepol/cil/src/cil_write_ast.c
+
 
 cil_src_files := \
   libsepol/cil/src/cil_binary.c \
@@ -156,18 +229,48 @@ libpcre2_src_files := \
   pcre/dist2/src/pcre2_xclass.c \
   pcre/dist2/src/pcre2_chartables.c
 
+libpcreaoo_src_files := \
+		pcre/dist2/src/pcre2_auto_possess.c \
+    pcre/dist2/src/pcre2_compile.c \
+    pcre/dist2/src/pcre2_config.c \
+    pcre/dist2/src/pcre2_context.c \
+    pcre/dist2/src/pcre2_convert.c \
+    pcre/dist2/src/pcre2_dfa_match.c \
+    pcre/dist2/src/pcre2_error.c \
+    pcre/dist2/src/pcre2_extuni.c \
+    pcre/dist2/src/pcre2_find_bracket. \
+    pcre/dist2/src/pcre2_maketables.c \
+    pcre/dist2/src/pcre2_match.c \
+    pcre/dist2/src/pcre2_match_data.c \
+    pcre/dist2/src/pcre2_jit_compile.c \
+    pcre/dist2/src/pcre2_newline.c \
+    pcre/dist2/src/pcre2_ord2utf.c \
+    pcre/dist2/src/pcre2_pattern_info.c \
+    pcre/dist2/src/pcre2_serialize.c \
+    pcre/dist2/src/pcre2_string_utils.c \
+    pcre/dist2/src/pcre2_study.c \
+    pcre/dist2/src/pcre2_substitute.c \
+    pcre/dist2/src/pcre2_substring.c \
+    pcre/dist2/src/pcre2_tables.c \
+    pcre/dist2/src/pcre2_ucd.c \
+    pcre/dist2/src/pcre2_valid_utf.c \
+    pcre/dist2/src/pcre2_xclass.c \
+    pcre/dist2/src/pcre2_chartables.c
 
 common_cflags := \
   -Wall -W -Wundef \
-  -Wshadow -Wmissing-noreturn \
+  -Wno-implicit-function-declaration \
   -Wmissing-format-attribute \
-  -std=gnu99 -O2 -fpic -fPIC \
+  -Wno-unused-variable \
+  -Wno-unused-parameter \
+  -Wno-missing-noreturn \
+  -Wno-unused-function \
+  -O2 -fpic -fPIC \
   -pipe -fno-strict-aliasing \
   -D_GNU_SOURCE  \
   -D__BIONIC__ -DANDROID \
-  -D__ANDROID__ -Wno-implicit-function-declaration \
-  -DPCRE2_CODE_UNIT_WIDTH=8 
-
+  -D__ANDROID__ \
+  -DPCRE2_CODE_UNIT_WIDTH=8
 
 common_ldlibs := \
   -lc
@@ -181,12 +284,14 @@ common_includes := \
   pcre/dist2 \
   pcre/include_internal \
   pcre/include \
+  pcre/pcrecpp \
+  pcre/pcrecpp/include \
   libpcre/dist \
   libselinux/src \
   libselinux/include \
   libselinux/include/selinux \
   /opt/androideabi/include/python2.7 \
-  /usr/include/python3.*
+  /usr/include/python3.* \
   libselinux/src/android \
   /opt/sdk/ndk-bundle/prebuilt/linux-x86_64/include/python2.7
 
@@ -267,8 +372,10 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libsepol
 LOCAL_MODULE_TAGES := optional
 LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_COPY_HEADERS_TO := sepol
+LOCAL_COPY_HEADERS := include/sepol/handle.h include/sepol/policydb.h cil/include/cil/cil.h
 LOCAL_CFLAGS := $(common_cflags)
-LOCAL_SRC_FILES := $(common_src_files)
+LOCAL_SRC_FILES := $(common_src_files2) $(cil_src_files2)
 LOCAL_MODULE_CLASS := STATIC_LIBRARIES
 
 include $(BUILD_STATIC_LIBRARY)
@@ -281,10 +388,11 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := chkcon
 LOCAL_MODULE_TAGS := optional
 LOCAL_C_INCLUDES := $(common_includes)
-LOCAL_CFLAGS := $(common_cflags)
+LOCAL_CFLAGS := $(common_cflags) -std=gnu99
 LOCAL_SRC_FILES := libsepol/utils/chkcon.c
 LOCAL_STATIC_LIBRARIES := libsepol
 LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_LDFLAGS := -static
 
 include $(BUILD_EXECUTABLE)
 
@@ -309,7 +417,7 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := sefcontext_compile
-LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags)
+LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags) -std=gnu99
 LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
 LOCAL_C_INCLUDES := $(common_includes)
 LOCAL_SRC_FILES := libselinux/utils/sefcontext_compile.c
@@ -324,11 +432,12 @@ include $(BUILD_EXECUTABLE)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := getfilecon
-LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags)
+LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags) -std=gnu99
 LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
 LOCAL_C_INCLUDES := $(common_includes)
 LOCAL_SRC_FILES := libselinux/utils/getfilecon.c
 LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
 
 include $(BUILD_EXECUTABLE)
 
@@ -338,11 +447,15 @@ include $(BUILD_EXECUTABLE)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := setfilecon
-LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags)
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
 LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
 LOCAL_C_INCLUDES := $(common_includes)
 LOCAL_SRC_FILES := libselinux/utils/setfilecon.c
 LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
 
 include $(BUILD_EXECUTABLE)
 
@@ -374,7 +487,44 @@ CFLAGS := -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissi
           -Werror -Wno-aggregate-return -Wno-redundant-decls
 
 LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags) $(CFLAGS)
+LOCAL_LDFLAGS := -static
+include $(BUILD_EXECUTABLE)
 
+#
+# Google's C++ wrapper.
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libpcrecpp
+LOCAL_CFLAGS += -DHAVE_CONFIG_H -std=gnu89 $(common_cflags)
+LOCAL_C_INCLUDES := \
+	$(common_includes) \
+	pcre/pcrecpp/include \
+	include
+LOCAL_MODULE_TAGS := optional
+LOCAL_SRC_FILES := $(libpcreaoo_src_files)
+LOCAL_EXPORT_C_INCLUDE_DIRS := pcre/pcrecpp/include
+include $(BUILD_STATIC_LIBRARY)
+
+##
+# libpcre2.a
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := pcreapp
+LOCAL_CFLAGS += -DHAVE_CONFIG_H $(common_cflags)
+LOCAL_CPP_EXTENSION := .cc
+LOCAL_C_INCLUDES := \
+	$(LOCAL_PATH) \
+	$(common_includes) \
+	pcre/pcrecpp/include \
+	include
+LOCAL_SRC_FILES := \
+	pcre/pcrecpp/pcrecpp.cc \
+	pcre/pcrecpp/pcre_scanner.cc \
+	pcre/pcrecpp/pcre_stringpiece.cc
+LOCAL_LDFLAGS := -static
+LOCAL_STATIC_LIBRARIES := libpcre2 libpcrecpp
 include $(BUILD_EXECUTABLE)
 
 ##
@@ -389,9 +539,9 @@ LOCAL_SRC_FILES := \
   checkpolicy/module_compiler.c \
   checkpolicy/parse_util.c \
   checkpolicy/policy_define.c \
-  checkpolicy/queue.c 
+  checkpolicy/queue.c
 LOCAL_MODULE := checkpolicy
-LOCAL_MODULE_TAGS := optional 
+LOCAL_MODULE_TAGS := optional
 LOCAL_C_INCLUDES := $(common_includes)
 LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
 LOCAL_STATIC_LIBRARIES := libsepol
@@ -404,7 +554,7 @@ include $(BUILD_EXECUTABLE)
 ##
 # checkmodule
 #
-include $(CLEAR_VARS) 
+include $(CLEAR_VARS)
 LOCAL_SRC_FILES := \
   $(checkpolicy_prepare) \
   checkpolicy/lex.yy.c \
@@ -413,13 +563,13 @@ LOCAL_SRC_FILES := \
   checkpolicy/module_compiler.c \
   checkpolicy/parse_util.c \
   checkpolicy/policy_define.c \
-  checkpolicy/queue.c 
+  checkpolicy/queue.c
 LOCAL_MODULE := checkmodule
-LOCAL_MODULE_TAGS := optional 
+LOCAL_MODULE_TAGS := optional
 LOCAL_C_INCLUDES := $(common_includes)
-LOCAL_CFLAGS := $(yacc_flags) $(common_cflags) 
+LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
 LOCAL_STATIC_LIBRARIES := libsepol
-LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC 
+LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC
 LOCAL_YACCFLAGS := -v
 LOCAL_LDFLAGS := -static
 
@@ -430,18 +580,15 @@ include $(BUILD_EXECUTABLE)
 #
 include $(CLEAR_VARS)
 LOCAL_MODULE := dispol
-LOCAL_MODULE_TAGS := optional 
+LOCAL_MODULE_TAGS := optional
 LOCAL_C_INCLUDES := $(common_includes)
-LOCAL_SRC_FILES := checkpolicy/test/dispol.c 
+LOCAL_SRC_FILES := checkpolicy/test/dispol.c
 LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
-LOCAL_STATIC_LIBRARIES := libsepol 
+LOCAL_STATIC_LIBRARIES := libsepol
 LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC
 LOCAL_MODULE_TAGS := optional
-<<<<<<< HEAD
-=======
 LOCAL_LDFLAGS := -static
 
->>>>>>> 3c85237ac9fec3403f5e970c8be284e0002020b8
 include $(BUILD_EXECUTABLE)
 
 ##6
@@ -449,42 +596,446 @@ include $(BUILD_EXECUTABLE)
 #
 include $(CLEAR_VARS)
 LOCAL_MODULE := dismod
-LOCAL_MODULE_TAGS := optional 
+LOCAL_MODULE_TAGS := optional
 LOCAL_C_INCLUDES := $(common_includes)
-LOCAL_SRC_FILES := checkpolicy/test/dismod.c 
+LOCAL_SRC_FILES := checkpolicy/test/dismod.c
 LOCAL_CFLAGS := $(yacc_flags) $(common_cflags)
-LOCAL_STATIC_LIBRARIES := libsepol 
+LOCAL_STATIC_LIBRARIES := libsepol
 LOCAL_CFLAGS += -std=gnu99 -fpic -fPIC
 LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
 include $(BUILD_EXECUTABLE)
 
+
 ##
-# matchpathcon
+# setfilecon
 #
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := matchpathcon
-LOCAL_STATIC_LIBRARIES := libselinux_static libpcre2 libsepol
+LOCAL_MODULE := avcstat
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
 LOCAL_C_INCLUDES := $(common_includes)
-LOCAL_SRC_FILES := libselinux/utils/matchpathcon.c
+LOCAL_SRC_FILES := libselinux/utils/avcstat.c
 LOCAL_MODULE_TAGS := optional
-CFLAGS := -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissing-include-dirs \
-          -Wunused -Wunknown-pragmas -Wstrict-aliasing -Wshadow -Wpointer-arith \
-          -Wbad-function-cast -Wcast-align -Wwrite-strings -Waggregate-return \
-          -Wstrict-prototypes -Wold-style-definition -Wmissing-prototypes \
-          -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute \
-          -Wredundant-decls -Wnested-externs -Winline -Winvalid-pch -Wvolatile-register-var \
-          -Wdisabled-optimization -Wbuiltin-macro-redefined \
-          -Wattributes -Wmultichar \
-          -Wdeprecated-declarations -Wdiv-by-zero -Wdouble-promotion -Wendif-labels -Wextra \
-          -Wformat-extra-args -Wformat-zero-length -Wformat=2 -Wmultichar \
-          -Woverflow -Wpointer-to-int-cast -Wpragmas \
-          -Wno-missing-field-initializers -Wno-sign-compare \
-          -Wno-format-nonliteral -Wp,-D_FORTIFY_SOURCE=2 \
-          -fstack-protector-all --param=ssp-buxzffer-size=4 -fexceptions \
-          -fasynchronous-unwind-tables -fdiagnostics-show-option -funit-at-a-time \
-          -Werror -Wno-aggregate-return -Wno-redundant-decls
+LOCAL_LDFLAGS := -static
 
-LOCAL_CFLAGS += -Wall -Werror -DUSE_PCRE2 -DNO_PERSISTENTLY_STORED_PATTERNS $(common_cflags) $(CFLAGS)
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := compute_av
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/compute.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := compute_create
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/compute_create.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := compute_member
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/compute_member.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := compute_relabel
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/compute_relabel.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := compute_user
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/compute_user.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := getconlist
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/getconlist.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := getdefaultcon
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/getdefaultcon.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := getenforce
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/getenforce.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := getpidcon
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/getpidcon.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := getsebool
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/getsebool.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := getseuser
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/getseuser.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := policyvers
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/policyvers.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selabel_digest
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selabel_digest.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selabel_lookup_best_match
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selabel_lookup_best_match.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selabel_lookup
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selabel_lookup.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selabel_partial_match
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selabel_partial_match.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selinux_check_access
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selinux_check_access.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selinux_check_securetty_context
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selinux_check_securetty_context.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selinuxenabled
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selinuxenabled.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := selinuxexeccon
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/selinuxexeccon.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := setenforce
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/setenforce.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := togglesebool
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/togglesebool.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
+
+include $(BUILD_EXECUTABLE)
+
+##
+# setfilecon
+#
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := validatetrans
+LOCAL_CFLAGS := \
+	-Wall -Werror -DUSE_PCRE2 \
+	-DNO_PERSISTENTLY_STORED_PATTERNS \
+	$(common_cflags) -std=gnu99
+LOCAL_STATIC_LIBRARIES := libselinux libpcre2 libsepol
+LOCAL_C_INCLUDES := $(common_includes)
+LOCAL_SRC_FILES := libselinux/utils/validatetrans.c
+LOCAL_MODULE_TAGS := optional
+LOCAL_LDFLAGS := -static
 
 include $(BUILD_EXECUTABLE)
