@@ -1,46 +1,18 @@
+# Installation directories.
 PREFIX ?= /usr
-OPT_SUBDIRS ?= dbus gui mcstrans python restorecond sandbox semodule-utils
-SUBDIRS=libsepol libselinux libsemanage checkpolicy secilc policycoreutils $(OPT_SUBDIRS)
-PYSUBDIRS=libselinux libsemanage
-DISTCLEANSUBDIRS=libselinux libsemanage
+INCDIR = $(PREFIX)/include/selinux
 
-ifeq ($(DEBUG),1)
-	export CFLAGS = -g3 -O0 -gdwarf-2 -fno-strict-aliasing -Wall -Wshadow -Werror -Wno-format
-	export LDFLAGS = -g
-else
-	export CFLAGS ?= -O2 -Werror -Wall -Wextra \
-		-Wmissing-format-attribute \
-		-Wmissing-noreturn \
-		-Wpointer-arith \
-		-Wshadow \
-		-Wstrict-prototypes \
-		-Wundef \
-		-Wunused \
-		-Wwrite-strings
-endif
+all:
 
-ifneq ($(DESTDIR),)
-	LIBDIR ?= $(DESTDIR)$(PREFIX)/lib
-	LIBSEPOLA ?= $(LIBDIR)/libsepol.a
+install: all
+	test -d $(DESTDIR)$(INCDIR) || install -m 755 -d $(DESTDIR)$(INCDIR)
+	install -m 644 $(wildcard selinux/*.h) $(DESTDIR)$(INCDIR)
 
-	CFLAGS += -I$(DESTDIR)$(PREFIX)/include
-	LDFLAGS += -L$(DESTDIR)$(PREFIX)/lib -L$(LIBDIR)
-	export CFLAGS
-	export LDFLAGS
-	export LIBSEPOLA
-endif
+relabel:
 
-all install relabel clean test indent:
-	@for subdir in $(SUBDIRS); do \
-		(cd $$subdir && $(MAKE) $@) || exit 1; \
-	done
+indent:
+	../../scripts/Lindent $(wildcard selinux/*.h)
 
-install-pywrap install-rubywrap swigify:
-	@for subdir in $(PYSUBDIRS); do \
-		(cd $$subdir && $(MAKE) $@) || exit 1; \
-	done
+distclean clean:
+	-rm -f selinux/*~
 
-distclean:
-	@for subdir in $(DISTCLEANSUBDIRS); do \
-		(cd $$subdir && $(MAKE) $@) || exit 1; \
-	done
